@@ -1,21 +1,27 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, Suspense, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import AdminSidebar from '../../components/AdminSidebar';
 import { normalizePath } from '@/lib/utils';
+
+// Dynamic import for the RichTextEditor to avoid SSR issues
+const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), {
+    ssr: false,
+    loading: () => <div className="h-96 w-full bg-slate-100 animate-pulse rounded-lg"></div>
+});
 
 function EditorContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const editId = searchParams.get('id');
-    const quillRef = useRef(null);
 
     const [form, setForm] = useState({ title: '', slug: '', content: '', is_published: true, gallery: '[]' });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
-    const [quill, setQuill] = useState(null);
     const [showMenuModal, setShowMenuModal] = useState(false);
     const [menus, setMenus] = useState([]);
     const [menuLinkProgress, setMenuLinkProgress] = useState(false);
@@ -35,59 +41,13 @@ function EditorContent() {
     useEffect(() => {
         if (!editId) {
             setForm({ title: '', slug: '', content: '', is_published: true, gallery: '[]' });
-            if (quillRef.current) {
-                quillRef.current.root.innerHTML = '';
-            }
         } else {
             loadPage();
         }
     }, [editId]);
 
-    useEffect(() => {
-        if (!loading && typeof window !== 'undefined') {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
-            document.head.appendChild(link);
-
-            const script = document.createElement('script');
-            script.src = 'https://cdn.quilljs.com/1.3.6/quill.min.js';
-            script.onload = () => {
-                const q = new window.Quill('#editor-container', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: {
-                            container: [
-                                [{ 'header': [1, 2, 3, false] }],
-                                ['bold', 'italic', 'underline', 'strike'],
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                [{ 'color': [] }, { 'background': [] }],
-                                ['link', 'image', 'video'],
-                                ['clean']
-                            ],
-                            handlers: {
-                                image: imageHandler
-                            }
-                        }
-                    }
-                });
-
-                if (form.content) {
-                    q.root.innerHTML = form.content;
-                }
-
-                q.on('text-change', () => {
-                    setForm(prev => ({ ...prev, content: q.root.innerHTML }));
-                });
-
-                quillRef.current = q;
-                setQuill(q);
-            };
-            document.head.appendChild(script);
-        }
-    }, [loading]);
-
     const handleGalleryUpload = async (e) => {
+        // ... (Keep existing implementation)
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
 
@@ -128,58 +88,6 @@ function EditorContent() {
         });
     };
 
-    const imageHandler = () => {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*,application/pdf');
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files[0];
-            if (!file) return;
-
-            const currentQuill = quillRef.current;
-            if (!currentQuill) return;
-
-            const range = currentQuill.getSelection(true);
-            const cursorPosition = range ? range.index : 0;
-
-            // Upload file to server
-            const formData = new FormData();
-            formData.append('file', file);
-
-            // Show a temporary message or loading state in editor
-            const loadingMsg = '⏳ กำลังอัปโหลดรูปภาพ...';
-            currentQuill.insertText(cursorPosition, loadingMsg, { 'italic': true, 'color': '#3b82f6' });
-
-            try {
-                const res = await fetch('/web/api/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await res.json();
-
-                // Remove the temporary message exactly
-                currentQuill.deleteText(cursorPosition, loadingMsg.length);
-
-                if (data.success) {
-                    if (file.type.startsWith('image/')) {
-                        currentQuill.insertEmbed(cursorPosition, 'image', data.url);
-                        currentQuill.setSelection(cursorPosition + 1);
-                    } else if (file.type === 'application/pdf') {
-                        currentQuill.insertText(cursorPosition, `📄 ${file.name}`, 'link', data.url);
-                        currentQuill.setSelection(cursorPosition + file.name.length + 2);
-                    }
-                } else {
-                    setMessage('อัพโหลดไฟล์ไม่สำเร็จ: ' + (data.error || 'Unknown error'));
-                }
-            } catch (error) {
-                currentQuill.deleteText(cursorPosition, loadingMsg.length);
-                setMessage('เกิดข้อผิดพลาด: ' + error.message);
-            }
-        };
-    };
-
     const checkAuth = async () => {
         const res = await fetch('/web/api/auth/me', { cache: 'no-store' });
         if (!res.ok) { router.push('/admin/login'); return; }
@@ -197,9 +105,6 @@ function EditorContent() {
                 is_published: !!data.page.is_published,
                 gallery: data.page.gallery || '[]',
             });
-            if (quillRef.current) {
-                quillRef.current.root.innerHTML = data.page.content || '';
-            }
         }
     };
 
@@ -312,9 +217,9 @@ function EditorContent() {
                     </div>
                     <div className="admin-header-right">
                         {editId && (
-                            <a className="btn-secondary" href={`/page/${form.slug}`} target="_blank">
+                            <Link className="btn-secondary" href={`/page/${form.slug}`} target="_blank">
                                 <span className="material-icons">open_in_new</span> ดูตัวอย่าง
-                            </a>
+                            </Link>
                         )}
                         <button className="btn-primary" onClick={handleSave} disabled={saving}>
                             <span className="material-icons">{saving ? 'hourglass_empty' : 'save'}</span>
@@ -346,7 +251,11 @@ function EditorContent() {
 
                                 <div className="form-group">
                                     <label>เนื้อหาเพจ</label>
-                                    <div id="editor-container" style={{ minHeight: '400px' }}></div>
+                                    <RichTextEditor
+                                        value={form.content}
+                                        onChange={(content) => setForm(prev => ({ ...prev, content }))}
+                                        placeholder="พิมพ์เนื้อหาที่นี่... (สามารถลากวางรูปภาพ หรือปรับขนาดได้ตามต้องการ)"
+                                    />
                                 </div>
                             </div>
                         </div>

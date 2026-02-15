@@ -14,6 +14,7 @@ export default function AdminSidebar() {
         { name: "จัดการแผนกวิชา", href: "/admin/departments", icon: "category" },
         { name: "จัดการบุคลากร", href: "/admin/personnel", icon: "groups" },
         { name: "จัดการข่าวสาร", href: "/admin/news", icon: "newspaper" },
+        { name: "จัดการจัดซื้อจัดจ้าง", href: "/admin/procurement", icon: "gavel" },
         { name: "จัดการเกี่ยวกับเรา", href: "/admin/about", icon: "info" },
         { name: "จัดการเมนู", href: "/admin/menus", icon: "sort" },
         { name: "จัดการเพจ", href: "/admin/pages", icon: "article" },

@@ -96,7 +96,51 @@ export async function GET() {
             results.push('Error updating cms_news: ' + e.message);
         }
 
-        // 5. Slug Repair: Ensure all courses/pages/news have slugs
+        // 5. Check/Create procurement_announcements table
+        try {
+            await query(`
+                CREATE TABLE IF NOT EXISTS procurement_announcements (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    title VARCHAR(500) NOT NULL,
+                    description TEXT,
+                    announcement_date DATE NOT NULL,
+                    year INT NOT NULL,
+                    file_url VARCHAR(500),
+                    external_url VARCHAR(500),
+                    gallery LONGTEXT,
+                    is_active BOOLEAN DEFAULT 1,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    INDEX idx_year (year),
+                    INDEX idx_is_active (is_active),
+                    INDEX idx_announcement_date (announcement_date)
+                )
+            `);
+            results.push('Ensured procurement_announcements table exists');
+
+            // Check if gallery column exists, add if not
+            const procurementColumns = await query(`SHOW COLUMNS FROM procurement_announcements`);
+            const hasGallery = procurementColumns.some(col => col.Field === 'gallery');
+            if (!hasGallery) {
+                await query(`ALTER TABLE procurement_announcements ADD COLUMN gallery LONGTEXT AFTER external_url`);
+                results.push('Added gallery column to procurement_announcements');
+            } else {
+                results.push('gallery column already exists in procurement_announcements');
+            }
+
+            // Check if is_urgent column exists, add if not
+            const hasUrgent = procurementColumns.some(col => col.Field === 'is_urgent');
+            if (!hasUrgent) {
+                await query(`ALTER TABLE procurement_announcements ADD COLUMN is_urgent BOOLEAN DEFAULT 0 AFTER is_active`);
+                results.push('Added is_urgent column to procurement_announcements');
+            } else {
+                results.push('is_urgent column already exists in procurement_announcements');
+            }
+        } catch (e) {
+            results.push('Error creating procurement_announcements table: ' + e.message);
+        }
+
+        // 6. Slug Repair: Ensure all courses/pages/news have slugs
         try {
             const courses = await query(`SELECT id, title, slug FROM cms_courses WHERE slug IS NULL OR slug = ''`);
             for (const course of courses) {

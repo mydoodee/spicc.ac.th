@@ -72,11 +72,17 @@ export default function Personnel() {
                             onClick={() => setSelectedPerson(person)}
                         >
                             <div className="relative h-64 overflow-hidden">
-                                <img
-                                    alt={person.role}
-                                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                                    src={normalizePath(person.image)}
-                                />
+                                {person.image ? (
+                                    <img
+                                        alt={person.role}
+                                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+                                        src={normalizePath(person.image)}
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-[#2b4a8a]/10 to-[#f2cc0d]/10 flex items-center justify-center">
+                                        <span className="material-icons text-6xl text-[#2b4a8a]/30">person</span>
+                                    </div>
+                                )}
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                     <span className="text-white font-bold border-2 border-white px-4 py-2 rounded-full transform scale-90 group-hover:scale-100 transition-transform text-sm">
                                         ดูรายละเอียด
@@ -121,11 +127,17 @@ export default function Personnel() {
                         </button>
 
                         <div className="w-full md:w-1/2 h-64 md:h-auto overflow-hidden">
-                            <img
-                                src={normalizePath(selectedPerson.image)}
-                                alt={selectedPerson.name}
-                                className="w-full h-full object-cover object-top"
-                            />
+                            {selectedPerson.image ? (
+                                <img
+                                    src={normalizePath(selectedPerson.image)}
+                                    alt={selectedPerson.name}
+                                    className="w-full h-full object-cover object-top"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-[#2b4a8a]/10 to-[#f2cc0d]/10 flex items-center justify-center">
+                                    <span className="material-icons text-9xl text-[#2b4a8a]/30">person</span>
+                                </div>
+                            )}
                         </div>
 
                         <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col bg-white overflow-hidden">

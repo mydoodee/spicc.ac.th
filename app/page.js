@@ -7,6 +7,7 @@ import News from "./components/News";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
+import ProcurementAnnouncements from "./components/ProcurementAnnouncements";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -17,9 +18,10 @@ export default function Home() {
       <LandingPage />
       <Navbar />
       <Hero />
-      <Personnel />
       <News />
+      <Personnel />
       <Courses />
+      <ProcurementAnnouncements />
       <About />
       <Footer />
     </main>

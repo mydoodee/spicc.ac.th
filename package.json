@@ -13,6 +13,8 @@
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.1",
     "next": "16.1.6",
+    "quill": "^2.0.3",
+    "quill-image-resize-module-react": "^3.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
