@@ -16,6 +16,12 @@
 # next.js
 /.next/
 /out/
+/web/dev/cache
+/web/trace
+/web/trace-build
+/web/.next
+/web/build
+
 
 # production
 /build
