@@ -1,0 +1,15 @@
+[00:00:07.673] Server  LOG     ✓ Ready in 5.2s
+[00:00:07.790] Browser ERROR   Failed to fetch footer data: {}
+[00:00:07.790] Browser ERROR   Fetch data error: {}
+[00:00:10.161] Browser WARN    [locator-js] React instance (react-server-dom-turbopack v19.3.0-canary-cbec50fd-20260122) is not supported
+[00:00:10.164] Browser WARN    [locator-js] React instance (react-dom v19.3.0-canary-f93b9fd4-20251217) is not supported
+[00:00:10.165] Browser WARN    [locatorjs]: ok
+[00:00:14.946] Browser WARN    [locator-js] React instance (react-server-dom-turbopack v19.3.0-canary-cbec50fd-20260122) is not supported
+[00:00:14.946] Browser WARN    [locator-js] React instance (react-dom v19.3.0-canary-f93b9fd4-20251217) is not supported
+[00:00:16.262] Server  ERROR   Node.js fs rename failed after 101 retries with error Error: EPERM: operation not permitted, rename 'C:\Users\Lenovo11\Desktop\xx\spicc.ac.th-main\web\dev\server\app-paths-manifest.json.tmp.skbgzdrl5wi' -> 'C:\Users\Lenovo11\Desktop\xx\spicc.ac.th-main\web\dev\server\app-paths-manifest.json'
+[00:00:16.337] Server  ERROR   ⨯ Error: EPERM: operation not permitted, rename 'C:\Users\Lenovo11\Desktop\xx\spicc.ac.th-main\web\dev\server\app-paths-manifest.json.tmp.skbgzdrl5wi' -> 'C:\Users\Lenovo11\Desktop\xx\spicc.ac.th-main\web\dev\server\app-paths-manifest.json'
+[00:00:17.390] Browser WARN    [locatorjs]: ok
+[00:00:18.318] Server  LOG     ○ Compiling /api/news ...
+[00:00:36.462] Browser WARN    [locator-js] React instance (react-server-dom-turbopack v19.3.0-canary-cbec50fd-20260122) is not supported
+[00:00:36.462] Browser WARN    [locator-js] React instance (react-dom v19.3.0-canary-f93b9fd4-20251217) is not supported
+[00:00:36.462] Browser WARN    [locatorjs]: ok
