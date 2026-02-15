@@ -449,7 +449,91 @@
 .admin-header-right {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
+}
+
+.admin-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-filter-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 40px;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Prompt', sans-serif;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+}
+
+.admin-filter-select:focus {
+    border-color: rgba(242, 204, 13, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-filter-select option {
+    background: #1a2332;
+    color: white;
+}
+
+.admin-search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 40px;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+.admin-search-box:focus-within {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(242, 204, 13, 0.5);
+    box-shadow: 0 0 0 3px rgba(242, 204, 13, 0.1);
+}
+
+.admin-search-box .material-icons {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 8px;
+}
+
+.admin-search-box input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    width: 100%;
+    outline: none;
+}
+
+.admin-search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: white;
 }
 
 .admin-user-info {
@@ -1454,4 +1538,90 @@
     .pages-table {
         font-size: 0.8rem;
     }
+}
+
+/* ---- Menu Tags in Table ---- */
+.menu-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.menu-tag {
+    padding: 2px 8px;
+    background: rgba(43, 74, 138, 0.2);
+    border: 1px solid rgba(43, 74, 138, 0.4);
+    color: #60a5fa;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.no-menu-tag {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.2);
+    font-style: italic;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pagination-info {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.pagination-btn.active {
+    background: #f2cc0d;
+    border-color: #f2cc0d;
+    color: #1a2332;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(242, 204, 13, 0.2);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+    color: rgba(255, 255, 255, 0.3);
+    padding: 0 4px;
 }

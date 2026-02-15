@@ -144,20 +144,14 @@ export default function News() {
         : news.filter(item => getYearFromDate(item.date) === selectedYear);
 
     // Split news into Featured and General
-    const featuredNews = filteredNews.filter(item => item.is_featured);
-    const generalNews = filteredNews.filter(item => !item.is_featured);
+    const featuredNewsItems = filteredNews.filter(item => item.is_featured);
+    const generalNewsItems = filteredNews.filter(item => !item.is_featured);
 
-    // Filter fallback: If no featured, take first 3. If no general, take rest.
-    // Note: If filtering by year reduces count, this logic still holds to show *something*.
-    const displayFeatured = featuredNews.length > 0 ? featuredNews : filteredNews.slice(0, 1);
+    // If no featured news, take top 4 items as featured fallback to ensure carousel moves
+    const displayFeatured = featuredNewsItems.length > 0 ? featuredNewsItems : filteredNews.slice(0, 4);
 
-    // On home page, now show up to 6 general news items (requested by user)
-    // If we used first item as featured fallback, skip it here.
-    // On home page, now show up to 6 general news items
-    // If we used first item as featured fallback, skip it here.
-    const displayGeneral = featuredNews.length > 0
-        ? generalNews.slice(0, 7)
-        : filteredNews.slice(1, 8);
+    // General news: Show up to 7 latest news items (allow overlap with carousel to ensure a full list)
+    const displayGeneral = filteredNews.slice(0, 7);
 
     // Reset currentFeatured when year changes or news updates
     useEffect(() => {
@@ -167,22 +161,26 @@ export default function News() {
     const handlePrev = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (displayFeatured.length <= 1) return;
         setCurrentFeatured(prev => (prev === 0 ? displayFeatured.length - 1 : prev - 1));
     };
 
     const handleNext = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (displayFeatured.length <= 1) return;
         setCurrentFeatured(prev => (prev === displayFeatured.length - 1 ? 0 : prev + 1));
     };
 
     if (loading) return null; // Or a loading skeleton
 
+    const activeItem = displayFeatured[currentFeatured];
+
     return (
         <section id="news" className="py-20 bg-white">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Header */}
-                <div className="text-center mb-6 animate-fade-in-up">
+                <div className="text-center mb-10 animate-fade-in-up">
                     <h2 className="text-3xl font-bold text-[#2b4a8a] mb-3">{settings.news_title}</h2>
                     <div className="w-20 h-1 bg-[#f2cc0d] mx-auto rounded-full"></div>
                     <p className="mt-4 text-slate-600 max-w-2xl mx-auto text-base mb-6">
@@ -211,75 +209,77 @@ export default function News() {
                 <div className="grid lg:grid-cols-12 gap-8">
                     {/* Featured News - Left Column */}
                     <div className="lg:col-span-7">
-                        {displayFeatured.length > 0 && (
-                            <div className="animate-fade-in-up animation-delay-200 h-full">
-                                <Link href={`/news/${displayFeatured[currentFeatured].slug || displayFeatured[currentFeatured].id}`} className="block h-full">
-                                    <div className="relative rounded-2xl overflow-hidden shadow-xl group hover:shadow-2xl transition-all duration-500 cursor-pointer h-full min-h-[500px]">
+                        {displayFeatured.length > 0 && activeItem && (
+                            <div className="animate-fade-in-up animation-delay-200 h-full relative group">
+                                <Link href={`/news/${activeItem.slug || activeItem.id}`} className="block h-full">
+                                    <div className="relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer h-full min-h-[500px]">
                                         <div className="relative h-full overflow-hidden">
                                             <img
-                                                alt={displayFeatured[currentFeatured].title}
+                                                alt={activeItem.title}
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                src={normalizePath(displayFeatured[currentFeatured].image)}
+                                                src={normalizePath(activeItem.image)}
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-[#2b4a8a]/90 via-[#2b4a8a]/40 to-transparent"></div>
                                         </div>
 
                                         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                                             <span className="inline-block px-3 py-1 bg-[#f2cc0d] text-[#2b4a8a] rounded-full text-sm font-bold mb-3">
-                                                ข่าวเด่น
+                                                {activeItem.is_featured ? 'ข่าวเด่น' : 'ข่าวล่าสุด'}
                                             </span>
                                             <h3 className="text-3xl font-bold mb-3 leading-tight">
-                                                {displayFeatured[currentFeatured].title}
+                                                {activeItem.title}
                                             </h3>
                                             <p className="text-slate-200 mb-4 text-base line-clamp-3">
-                                                {displayFeatured[currentFeatured].description}
+                                                {activeItem.description}
                                             </p>
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2 text-sm text-slate-300">
-                                                    <span className="material-icons text-base">event</span>
-                                                    <span>{displayFeatured[currentFeatured].date}</span>
-                                                </div>
-
-                                                {/* Navigation Buttons */}
-                                                <div className="flex gap-3">
-                                                    <button
-                                                        onClick={handlePrev}
-                                                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-[#f2cc0d] hover:text-[#2b4a8a] hover:border-[#f2cc0d] transition-all"
-                                                        aria-label="Previous news"
-                                                    >
-                                                        <span className="material-icons text-xl">chevron_left</span>
-                                                    </button>
-                                                    <button
-                                                        onClick={handleNext}
-                                                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-[#f2cc0d] hover:text-[#2b4a8a] hover:border-[#f2cc0d] transition-all"
-                                                        aria-label="Next news"
-                                                    >
-                                                        <span className="material-icons text-xl">chevron_right</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            {/* Indicators */}
-                                            <div className="flex gap-2 mt-6">
-                                                {displayFeatured.map((_, index) => (
-                                                    <button
-                                                        key={index}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            e.stopPropagation();
-                                                            setCurrentFeatured(index);
-                                                        }}
-                                                        className={`h-1.5 rounded-full transition-all ${index === currentFeatured
-                                                            ? 'w-8 bg-[#f2cc0d]'
-                                                            : 'w-4 bg-white/40 hover:bg-white/60'
-                                                            }`}
-                                                        aria-label={`Go to news ${index + 1}`}
-                                                    />
-                                                ))}
+                                            <div className="flex items-center gap-2 text-sm text-slate-300">
+                                                <span className="material-icons text-base">event</span>
+                                                <span>{activeItem.date}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </Link>
+
+                                {/* Navigation Buttons - Outside Link to prevent interference */}
+                                {displayFeatured.length > 1 && (
+                                    <>
+                                        <div className="absolute bottom-8 right-8 flex gap-3 z-10">
+                                            <button
+                                                onClick={handlePrev}
+                                                className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-[#f2cc0d] hover:text-[#2b4a8a] hover:border-[#f2cc0d] transition-all shadow-lg"
+                                                aria-label="Previous news"
+                                            >
+                                                <span className="material-icons text-xl">chevron_left</span>
+                                            </button>
+                                            <button
+                                                onClick={handleNext}
+                                                className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-[#f2cc0d] hover:text-[#2b4a8a] hover:border-[#f2cc0d] transition-all shadow-lg"
+                                                aria-label="Next news"
+                                            >
+                                                <span className="material-icons text-xl">chevron_right</span>
+                                            </button>
+                                        </div>
+
+                                        {/* Indicators */}
+                                        <div className="absolute bottom-8 left-8 flex gap-2 z-10">
+                                            {displayFeatured.map((_, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        setCurrentFeatured(index);
+                                                    }}
+                                                    className={`h-1.5 rounded-full transition-all ${index === currentFeatured
+                                                        ? 'w-8 bg-[#f2cc0d]'
+                                                        : 'w-4 bg-white/40 hover:bg-white/60'
+                                                        }`}
+                                                    aria-label={`Go to news ${index + 1}`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>

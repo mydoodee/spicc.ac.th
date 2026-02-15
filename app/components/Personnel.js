@@ -33,8 +33,8 @@ export default function Personnel() {
                     if (homepageStaff.length > 0) {
                         setStaff(homepageStaff);
                     } else {
-                        // Fallback to first 4 if no one selected for homepage
-                        setStaff(data.personnel.slice(0, 4));
+                        // Fallback to first 5 if no one selected for homepage
+                        setStaff(data.personnel.slice(0, 5));
                     }
                 } else {
                     setStaff([]);
@@ -63,7 +63,7 @@ export default function Personnel() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
                     {staff.map((person, index) => (
                         <div
                             key={person.id || index}
@@ -71,22 +71,22 @@ export default function Personnel() {
                             style={{ animationDelay: `${index * 100}ms` }}
                             onClick={() => setSelectedPerson(person)}
                         >
-                            <div className="relative h-72 overflow-hidden">
+                            <div className="relative h-64 overflow-hidden">
                                 <img
                                     alt={person.role}
                                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
                                     src={normalizePath(person.image)}
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <span className="text-white font-bold border-2 border-white px-4 py-2 rounded-full transform scale-90 group-hover:scale-100 transition-transform">
+                                    <span className="text-white font-bold border-2 border-white px-4 py-2 rounded-full transform scale-90 group-hover:scale-100 transition-transform text-sm">
                                         ดูรายละเอียด
                                     </span>
                                 </div>
                             </div>
-                            <div className="p-6">
-                                <h4 className="text-xl font-bold text-[#2b4a8a] mb-1">{person.name}</h4>
-                                <p className="text-[#f2cc0d] font-medium text-sm mb-4">{person.role}</p>
-                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
+                            <div className="p-4 flex flex-col items-center text-center">
+                                <h4 className="text-lg font-bold text-[#2b4a8a] mb-1 line-clamp-1">{person.name}</h4>
+                                <p className="text-[#f2cc0d] font-semibold text-[13px] mb-3">{person.role}</p>
+                                <p className="text-slate-500 text-xs leading-relaxed line-clamp-2">
                                     {person.description}
                                 </p>
                             </div>
