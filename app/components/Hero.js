@@ -83,8 +83,6 @@ export default async function Hero() {
                     </svg>
                 </div>
             </section>
-
-
         </>
     );
 }

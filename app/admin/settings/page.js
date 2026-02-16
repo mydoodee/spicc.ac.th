@@ -15,7 +15,14 @@ export default function AdminSettings() {
         site_subtitle: "",
         register_link: "",
         register_button_text: "",
-        cookie_policy: ""
+        cookie_policy: "",
+        show_home_slider: true,
+        show_features: true,
+        show_personnel: true,
+        show_courses: true,
+        show_news: true,
+        show_about: true,
+        show_procurement: true
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -40,7 +47,14 @@ export default function AdminSettings() {
                     site_subtitle: s.site_subtitle || "",
                     register_link: s.register_link || "",
                     register_button_text: s.register_button_text || "",
-                    cookie_policy: s.cookie_policy || ""
+                    cookie_policy: s.cookie_policy || "",
+                    show_home_slider: s.show_home_slider !== 0,
+                    show_features: s.show_features !== 0,
+                    show_personnel: s.show_personnel !== 0,
+                    show_courses: s.show_courses !== 0,
+                    show_news: s.show_news !== 0,
+                    show_about: s.show_about !== 0,
+                    show_procurement: s.show_procurement !== 0
                 });
                 if (s.site_logo_url) {
                     setLogoType('image');
@@ -248,6 +262,39 @@ export default function AdminSettings() {
                                     placeholder="รายละเอียดนโยบายคุกกี้..."
                                     className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-primary transition-colors"
                                 ></textarea>
+                            </div>
+
+                            <hr className="border-white/5" />
+
+                            <div className="form-group">
+                                <label className="mb-4 block">จัดการส่วนต่างๆ ในหน้าแรก (Homepage Sections)</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {[
+                                        { id: 'show_home_slider', label: 'Home Slider', icon: 'view_carousel' },
+                                        { id: 'show_news', label: 'News (ข่าวสาร)', icon: 'newspaper' },
+                                        { id: 'show_personnel', label: 'Personnel (บุคลากร)', icon: 'people' },
+                                        { id: 'show_courses', label: 'Courses (หลักสูตร)', icon: 'school' },
+                                        { id: 'show_features', label: 'Features (จุดเด่น)', icon: 'star' },
+                                        { id: 'show_about', label: 'About (เกี่ยวกับเรา)', icon: 'info' },
+                                        { id: 'show_procurement', label: 'Procurement (ประกวดราคา)', icon: 'assignment' },
+                                    ].map((section) => (
+                                        <div key={section.id} className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-all">
+                                            <div className="flex items-center gap-3">
+                                                <span className="material-icons text-primary text-sm">{section.icon}</span>
+                                                <span className="text-sm font-medium text-white">{section.label}</span>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSettings(prev => ({ ...prev, [section.id]: !prev[section.id] }))}
+                                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${settings[section.id] ? 'bg-primary' : 'bg-white/10'}`}
+                                            >
+                                                <span
+                                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${settings[section.id] ? 'translate-x-6' : 'translate-x-1'}`}
+                                                />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="flex justify-end pt-4">

@@ -30,7 +30,14 @@ export async function PUT(req) {
             site_subtitle,
             register_link,
             register_button_text,
-            cookie_policy
+            cookie_policy,
+            show_home_slider,
+            show_features,
+            show_personnel,
+            show_courses,
+            show_news,
+            show_about,
+            show_procurement
         } = await req.json();
 
         // Check if settings exist
@@ -47,7 +54,14 @@ export async function PUT(req) {
                 site_subtitle = ?,
                 register_link = ?, 
                 register_button_text = ?,
-                cookie_policy = ?
+                cookie_policy = ?,
+                show_home_slider = ?,
+                show_features = ?,
+                show_personnel = ?,
+                show_courses = ?,
+                show_news = ?,
+                show_about = ?,
+                show_procurement = ?
                 WHERE id = ?`,
                 [
                     site_name,
@@ -59,14 +73,21 @@ export async function PUT(req) {
                     register_link,
                     register_button_text,
                     cookie_policy || '',
+                    show_home_slider ? 1 : 0,
+                    show_features ? 1 : 0,
+                    show_personnel ? 1 : 0,
+                    show_courses ? 1 : 0,
+                    show_news ? 1 : 0,
+                    show_about ? 1 : 0,
+                    show_procurement ? 1 : 0,
                     existing[0].id
                 ]
             );
         } else {
             await query(
                 `INSERT INTO cms_site_settings 
-                (site_name, site_logo, site_logo_url, site_favicon_url, site_title_suffix, site_subtitle, register_link, register_button_text, cookie_policy) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                (site_name, site_logo, site_logo_url, site_favicon_url, site_title_suffix, site_subtitle, register_link, register_button_text, cookie_policy, show_home_slider, show_features, show_personnel, show_courses, show_news, show_about, show_procurement) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     site_name,
                     site_logo,
@@ -76,7 +97,14 @@ export async function PUT(req) {
                     site_subtitle,
                     register_link,
                     register_button_text,
-                    cookie_policy || ''
+                    cookie_policy || '',
+                    show_home_slider ? 1 : 0,
+                    show_features ? 1 : 0,
+                    show_personnel ? 1 : 0,
+                    show_courses ? 1 : 0,
+                    show_news ? 1 : 0,
+                    show_about ? 1 : 0,
+                    show_procurement ? 1 : 0
                 ]
             );
         }

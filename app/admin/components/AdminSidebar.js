@@ -9,6 +9,7 @@ export default function AdminSidebar() {
     const menuItems = [
         { name: "Dashboard", href: "/admin", icon: "dashboard" },
         { name: "จัดการส่วนหัว", href: "/admin/hero", icon: "view_carousel" },
+        { name: "จัดการสไลด์ภาพ", href: "/admin/home-slider", icon: "collections" },
         { name: "จัดการหน้าคั่น", href: "/admin/landing-page", icon: "auto_awesome" },
         { name: "จัดการหลักสูตร", href: "/admin/courses", icon: "school" },
         { name: "จัดการแผนกวิชา", href: "/admin/departments", icon: "category" },
@@ -19,6 +20,7 @@ export default function AdminSidebar() {
         { name: "จัดการเมนู", href: "/admin/menus", icon: "sort" },
         { name: "จัดการเพจ", href: "/admin/pages", icon: "article" },
         { name: "จัดการส่วนท้าย", href: "/admin/footer", icon: "wrap_text" },
+        { name: "จัดการโปรไฟล์", href: "/admin/profile", icon: "account_circle" },
         { name: "ตั้งค่าเว็บไซต์", href: "/admin/settings", icon: "settings" },
     ];
 

@@ -58,8 +58,8 @@ export async function PUT(request) {
             ]);
         }
 
-        return NextResponse.json({ success: true, message: 'Updated successfully' });
         revalidatePath('/'); // Clear home page cache
+        return NextResponse.json({ success: true, message: 'Updated successfully' });
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }

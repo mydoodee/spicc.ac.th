@@ -27,38 +27,8 @@ export default function Features() {
     return (
         <section className="bg-gradient-to-b from-[#f8f8f5] to-white py-24 relative overflow-hidden">
             <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center">
-                {/* Header Section - Centered */}
-                <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-                    {/* <span className="text-[#f2cc0d] font-bold tracking-wider uppercase text-sm mb-3 block">
-                        WHY CHOOSE US
-                    </span> */}
-                    <h2 className="text-3xl md:text-5xl font-bold text-[#1a365d] mb-6 leading-tight">
-                        ทำไมต้องเลือก <br />
-
-                    </h2>
-                    <p className="text-slate-600 text-lg leading-relaxed">
-                        เรามุ่งมั่นที่จะมอบประสบการณ์การเรียนรู้ที่ดีที่สุด
-                        เพื่อเตรียมความพร้อมให้คุณก้าวสู่โลกแห่งการทำงานในอนาคตได้อย่างมั่นใจ
-                    </p>
-                </div>
-
-                {/* Image Section - Centered & Wide */}
-                <div className="w-full max-w-5xl mx-auto mb-16 animate-fade-in-up animation-delay-200">
-                    <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-[#1a365d]/10 group">
-                        <img
-                            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1600"
-                            alt="Students talking"
-                            className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#1a365d]/60 to-transparent"></div>
-                        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white">
-                            <p className="text-lg md:text-xl font-medium">บรรยากาศการเรียนรู้ง่ายๆ ที่เป็นกันเอง</p>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Features Grid - Centered 4 Columns */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl animate-fade-in-up animation-delay-400">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl animate-fade-in-up">
                     {features.map((item, index) => (
                         <div
                             key={index}
