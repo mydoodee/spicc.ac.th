@@ -1,5 +1,6 @@
 node_modules/
 .next/
+web/
 logs/
 .env.local
 .env.development.local
